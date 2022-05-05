@@ -1,0 +1,33 @@
+stages:
+  - clean
+
+clean:
+  stage: clean
+  tags:
+    - shell
+  script:
+    - |+
+      echo "Removing pipelines..."
+
+      # Get all projects
+      PROJECTS=$(curl --header "PRIVATE-TOKEN: ${GITLAB_TOKEN}" "$GITLAB_API/projects?per_page=500")
+
+      echo "Number of projects: $(echo "$PROJECTS" | jq -r '.[] | .id')"
+
+      # Get the project ids
+      IFS=$'\n'
+      PROJECT_IDS=($(echo "$PROJECTS" | jq -r '.[] | .id'))
+
+      # Foreach project remove the pipelines
+      for i in "${!PROJECT_IDS[@]}"; do
+          functions/clear_pipelines "${GITLAB_TOKEN}" "${PROJECT_IDS[i]}" 5
+          functions/clear_artifacts "${GITLAB_TOKEN}" "${PROJECT_IDS[i]}"
+      done
+  only:
+    - master
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web" || $CI_COMMIT_BRANCH == "master"
+      when: always
+    - when: never
