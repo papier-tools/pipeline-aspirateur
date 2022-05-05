@@ -22,6 +22,6 @@ IFS=$'\n'
 PROJECT_IDS=($(echo "${PROJECTS}" | jq -r '.[] | .id'))
 
 for i in "${!PROJECT_IDS[@]}"; do
-    functions/clear_pipelines "${JOB_TOKEN}" "${PROJECT_IDS[i]}" 5
-    functions/clear_artifacts "${JOB_TOKEN}" "${PROJECT_IDS[i]}"
+    functions/clear_pipelines.sh "${JOB_TOKEN}" "${PROJECT_IDS[i]}" 5
+    functions/clear_artifacts.sh "${JOB_TOKEN}" "${PROJECT_IDS[i]}"
 done
