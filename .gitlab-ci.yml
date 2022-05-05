@@ -8,14 +8,14 @@ clean:
   script:
     - |+
       echo "Get all projects..."
-      PROJECTS=$(curl --header "PRIVATE-TOKEN: ${GITLAB_TOKEN}" "$GITLAB_API/projects?per_page=500")
+      PROJECTS=$(curl --header "PRIVATE-TOKEN: ${TOKEN_ASPIRATEUR}" "$GITLAB_API/projects?per_page=500")
       echo "Get the project ids..."
       IFS=$'\n'
       PROJECT_IDS=($(echo "$PROJECTS" | jq -r '.[] | .id'))
       
       for i in "${!PROJECT_IDS[@]}"; do
-          functions/clear_pipelines "${GITLAB_TOKEN}" "${PROJECT_IDS[i]}" 5
-          functions/clear_artifacts "${GITLAB_TOKEN}" "${PROJECT_IDS[i]}"
+          functions/clear_pipelines "${TOKEN_ASPIRATEUR}" "${PROJECT_IDS[i]}" 5
+          functions/clear_artifacts "${TOKEN_ASPIRATEUR}" "${PROJECT_IDS[i]}"
       done
   only:
     - master
