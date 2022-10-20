@@ -1,4 +1,9 @@
 clean:
+  pre_script:
+    - apk update
+    - apk add jq
+    - chmod +x main.sh
+    - chmod +x functions/*.sh
   script:
     - ./main.sh ${TOKEN_ASPIRATEUR}
   only:
