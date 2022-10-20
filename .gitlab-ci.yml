@@ -1,10 +1,4 @@
-stages:
-  - clean
-
 clean:
-  stage: clean
-  tags:
-    - shell
   script:
     - ./main.sh ${TOKEN_ASPIRATEUR}
   only:
