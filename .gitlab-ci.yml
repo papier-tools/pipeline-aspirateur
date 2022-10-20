@@ -1,5 +1,5 @@
 clean:
-  pre_script:
+  before_script:
     - apk update
     - apk add jq
     - chmod +x main.sh
