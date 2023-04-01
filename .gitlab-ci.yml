@@ -1,14 +1,10 @@
 clean:
-  before_script:
-    - apk update
-    - apk add jq bash curl
+  image: registry.papierpain.fr/docker/alpine:latest
   script:
     - ./main.sh ${TOKEN_ASPIRATEUR}
-  only:
-    - master
 
 workflow:
   rules:
-    - if: $CI_PIPELINE_SOURCE == "web" || $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "schedule"
       when: always
     - when: never
